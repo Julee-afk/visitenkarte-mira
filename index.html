@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mira Jaschinger – Digitale Visitenkarte | VerumVita®</title>
+  <meta name="description" content="Mira Jaschinger – Co-Founder & Leitung BGM bei VerumVita®. BGF-Expertin, Ökotrophologin, M.Sc. Prävention.">
+  <meta name="author" content="PraxisPro Digital – praxis-pro-digital.de">
+  <meta name="theme-color" content="#43AE61" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a2332" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mira Jaschinger – VerumVita®">
+  <meta property="og:description" content="Co-Founder & Leitung BGM · BGF-Expertin · Ökotrophologin · M.Sc. Prävention">
+  <meta property="og:type" content="profile">
+  <meta property="og:image" content="https://www.verumvita.de/_next/image?url=%2Fimages%2Fteam%2Fmira.jpeg&w=640&q=80">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --vv-green: #43AE61;
+      --vv-green-light: #45BA7F;
+      --vv-purple: #9203B6;
+      --vv-gray: #5D646C;
+
+      --card-bg: #ffffff;
+      --body-bg-start: #f0f4f0;
+      --body-bg-end: #f5f0f5;
+      --text-primary: #2c3e50;
+      --text-secondary: #5D646C;
+      --text-muted: #8c8e96;
+      --divider: #e0e8e0;
+      --chip-bg: rgba(255, 255, 255, 0.2);
+      --chip-border: rgba(255, 255, 255, 0.35);
+      --btn-secondary-bg: #f5f8f5;
+      --btn-secondary-border: #e0e8e0;
+      --btn-secondary-hover: #ebf0eb;
+      --btn-tertiary-border: #d0d8d0;
+      --footer-text: #b0b0b0;
+      --powered-bg: #f8faf8;
+      --powered-border: #e8ece8;
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+      --toast-bg: #2c3e50;
+      --toast-text: #ffffff;
+    }
+
+    /* ===== DARK MODE ===== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --card-bg: #1e2a3a;
+        --body-bg-start: #0f1923;
+        --body-bg-end: #1a1528;
+        --text-primary: #e4e8ec;
+        --text-secondary: #a0aab4;
+        --text-muted: #6b7580;
+        --divider: #2a3a4a;
+        --btn-secondary-bg: #243040;
+        --btn-secondary-border: #2e4050;
+        --btn-secondary-hover: #2a3848;
+        --btn-tertiary-border: #2e4050;
+        --footer-text: #5a6a7a;
+        --powered-bg: #1a2535;
+        --powered-border: #2a3a4a;
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+        --toast-bg: #e4e8ec;
+        --toast-text: #1a1a1a;
+      }
+
+      .qr-code {
+        background: #fff;
+        padding: 8px;
+        border-radius: 12px;
+      }
+
+      .logo {
+        filter: brightness(10);
+      }
+    }
+
+    /* Light mode: invert SVG logo to white on colored bg */
+    @media (prefers-color-scheme: light) {
+      .logo {
+        filter: brightness(0) invert(1);
+        opacity: 0.92;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--body-bg-start) 0%, var(--body-bg-end) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      color: var(--text-primary);
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow-card);
+      max-width: 420px;
+      width: 100%;
+      overflow: hidden;
+      animation: cardFadeIn 0.6s ease-out;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== ANIMATED HEADER ===== */
+    .card-header {
+      background: linear-gradient(135deg, #43AE61, #45BA7F, #6a5daa, #9203B6, #45BA7F, #43AE61);
+      background-size: 300% 300%;
+      animation: gradientShift 10s ease infinite;
+      padding: 32px 32px 28px;
+      text-align: center;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .logo {
+      width: 140px;
+      max-width: 50%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    /* ===== AVATAR ===== */
+    .avatar-wrapper {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .person-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.2px;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 2px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    /* ===== COMPETENCE CHIPS ===== */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #ffffff;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.15s;
+      cursor: default;
+    }
+
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.32);
+      transform: translateY(-1px);
+    }
+
+    /* ===== CARD BODY ===== */
+    .card-body {
+      padding: 28px 32px 32px;
+    }
+
+    .contact-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: color 0.2s;
+    }
+
+    a.contact-item:hover {
+      color: var(--vv-green);
+    }
+
+    .contact-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--vv-purple);
+    }
+
+    .contact-text {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--divider), transparent);
+      margin-bottom: 24px;
+    }
+
+    /* ===== QR CODE ===== */
+    .qr-section {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .qr-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .qr-code {
+      width: 160px;
+      height: 160px;
+      border-radius: 12px;
+    }
+
+    /* ===== ACTION BUTTONS ===== */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #43AE61 0%, #45BA7F 40%, #9203B6 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(67, 174, 97, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(67, 174, 97, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--btn-secondary-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--btn-secondary-hover);
+    }
+
+    .btn-tertiary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px dashed var(--btn-tertiary-border);
+      font-size: 14px;
+      padding: 12px 20px;
+    }
+
+    .btn-tertiary:hover {
+      color: var(--vv-green);
+      border-color: var(--vv-green);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 0 32px 24px;
+      font-size: 11px;
+      color: var(--footer-text);
+    }
+
+    /* ===== POWERED BY PRAXISPRO ===== */
+    .powered-by {
+      margin-top: 12px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .powered-by a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--powered-bg);
+      border: 1px solid var(--powered-border);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      color: var(--text-muted);
+      font-size: 10.5px;
+    }
+
+    .powered-by a:hover {
+      border-color: #6a9dff;
+      background: rgba(106, 157, 255, 0.06);
+      color: #5a8ae6;
+      box-shadow: 0 2px 8px rgba(106, 157, 255, 0.1);
+    }
+
+    .powered-label {
+      font-weight: 400;
+    }
+
+    .powered-brand {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .powered-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--toast-bg);
+      color: var(--toast-text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 10;
+    }
+
+    .powered-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--toast-bg);
+    }
+
+    .powered-by:hover .powered-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--toast-bg);
+      color: var(--toast-text);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 100;
+      font-family: inherit;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 460px) {
+      body {
+        padding: 16px 12px;
+        align-items: flex-start;
+        padding-top: 32px;
+      }
+
+      .card-header {
+        padding: 24px 24px 22px;
+      }
+
+      .avatar-wrapper {
+        width: 84px;
+        height: 84px;
+      }
+
+      .person-name {
+        font-size: 20px;
+      }
+
+      .chip {
+        font-size: 11px;
+        padding: 4px 12px;
+      }
+
+      .card-body {
+        padding: 24px 24px 28px;
+      }
+
+      .footer {
+        padding: 0 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <!-- ===== HEADER mit animiertem Gradient ===== -->
+    <header class="card-header">
+      <img src="assets/logo.svg" alt="VerumVita Logo" class="logo" width="140" height="35">
+
+      <div class="avatar-wrapper">
+        <picture>
+          <source srcset="assets/mira.webp" type="image/webp">
+          <img src="assets/mira.jpeg" alt="Portrait von Mira Jaschinger" class="avatar" width="100" height="100" loading="eager">
+        </picture>
+      </div>
+
+      <h1 class="person-name">Mira Jaschinger</h1>
+      <p class="person-title">BGF-Expertin · Ökotrophologin · M.Sc. Prävention</p>
+      <p class="tagline">Co-Founder &amp; Leitung BGM</p>
+
+      <!-- Kompetenz-Chips -->
+      <div class="chips" role="list" aria-label="Schwerpunkte">
+        <span class="chip" role="listitem">Betriebliche Gesundheitsförderung</span>
+        <span class="chip" role="listitem">Gesundheitstage</span>
+        <span class="chip" role="listitem">Balanced Leadership</span>
+        <span class="chip" role="listitem">Prävention</span>
+      </div>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="card-body">
+      <div class="contact-section">
+        <!-- Adresse -->
+        <div class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="contact-text">Karmarschstraße 46<br>30159 Hannover</span>
+        </div>
+
+        <!-- E-Mail -->
+        <a href="mailto:mirajaschinger@verumvita.de" class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 4-10 8L2 4"/>
+          </svg>
+          <span class="contact-text">mirajaschinger@verumvita.de</span>
+        </a>
+
+        <!-- Telefon -->
+        <a href="tel:+4951116653830" class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span class="contact-text">0511 / 166 538 30</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/verumvita/" target="_blank" rel="noopener noreferrer" class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="contact-text">@verumvita</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/julian-jaschinger-219145208/" target="_blank" rel="noopener noreferrer" class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          <span class="contact-text">VerumVita auf LinkedIn</span>
+        </a>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- QR-Code -->
+      <div class="qr-section">
+        <p class="qr-label">QR-Code scannen</p>
+        <img src="assets/qr-mira.png" alt="QR-Code zur persönlichen Seite von Mira Jaschinger" class="qr-code" width="160" height="160">
+      </div>
+
+      <!-- Buttons -->
+      <div class="actions">
+        <a href="https://www.verumvita.de/ueber-uns/mira-jaschinger" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          Website besuchen
+        </a>
+
+        <a href="mailto:mirajaschinger@verumvita.de" class="btn btn-secondary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 4-10 8L2 4"/>
+          </svg>
+          E-Mail senden
+        </a>
+
+        <button type="button" class="btn btn-secondary" onclick="downloadVCard()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Kontakt speichern
+        </button>
+
+        <button type="button" class="btn btn-tertiary" onclick="shareCard()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Karte teilen
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER mit PraxisPro Badge ===== -->
+    <footer class="footer">
+      &copy; 2026 VerumVita&reg; GbR &middot; verumvita.de
+
+      <div class="powered-by">
+        <a href="https://praxis-pro-digital.de" target="_blank" rel="noopener noreferrer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          <span class="powered-label">Digitale Visitenkarte von</span>
+          <span class="powered-brand">PraxisPro Digital</span>
+        </a>
+        <span class="powered-tooltip">Digitale Lösungen für Gesundheitsberufe</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ===== vCard Download ===== */
+    function downloadVCard() {
+      var lines = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'N:Jaschinger;Mira;;;',
+        'FN:Mira Jaschinger',
+        'ORG:VerumVita\u00AE GbR',
+        'TITLE:Co-Founder & Leitung BGM',
+        'EMAIL;TYPE=WORK:mirajaschinger@verumvita.de',
+        'TEL;TYPE=WORK:+49 511 166 538 30',
+        'ADR;TYPE=WORK:;;Karmarschstra\u00DFe 46;Hannover;;30159;Deutschland',
+        'URL:https://www.verumvita.de/ueber-uns/mira-jaschinger',
+        'NOTE:BGF-Expertin \u00B7 \u00D6kotrophologin \u00B7 M.Sc. Pr\u00E4vention',
+        'END:VCARD'
+      ];
+      var vcard = lines.join('\r\n');
+
+      var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'Mira_Jaschinger_VerumVita.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Kontakt wird heruntergeladen\u2009…');
+    }
+
+    /* ===== Web Share API mit Fallback ===== */
+    function shareCard() {
+      var data = {
+        title: 'Mira Jaschinger \u2013 VerumVita\u00AE',
+        text: 'Digitale Visitenkarte von Mira Jaschinger \u2013 Co-Founder & Leitung BGM bei VerumVita\u00AE',
+        url: 'https://www.verumvita.de/ueber-uns/mira-jaschinger'
+      };
+
+      if (navigator.share) {
+        navigator.share(data).catch(function() {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(data.url).then(function() {
+          showToast('Link in die Zwischenablage kopiert!');
+        });
+      } else {
+        var tmp = document.createElement('textarea');
+        tmp.value = data.url;
+        tmp.style.position = 'fixed';
+        tmp.style.opacity = '0';
+        document.body.appendChild(tmp);
+        tmp.focus();
+        tmp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tmp);
+        showToast('Link in die Zwischenablage kopiert!');
+      }
+    }
+
+    /* ===== Toast Notification ===== */
+    function showToast(msg) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(function() { el.classList.remove('show'); }, 2400);
+    }
+  </script>
+</body>
+</html>
